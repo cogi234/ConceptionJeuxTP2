@@ -10,7 +10,7 @@ public class GameGraphs : MonoBehaviour
     [SerializeField] List<Vector3> vertexPositions;
     [SerializeField] AdjacencyType adjacencyType;
     
-    AdjacencyList adjacencyList = new AdjacencyList(5);
+    AdjacencyList adjacencyList;
     AdjacencyMatrix adjacencyMatrix;
     AdjacencyListCosts adjacencyListCosts;
     AdjacencyMatrixCosts adjacencyMatrixCosts;
