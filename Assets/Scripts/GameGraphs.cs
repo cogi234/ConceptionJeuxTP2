@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using PathfindingLib;
+using PathfindingLib;
 
 public class GameGraphs : MonoBehaviour
 {
@@ -9,8 +9,8 @@ public class GameGraphs : MonoBehaviour
 
     [SerializeField] List<Vector3> vertexPositions;
     [SerializeField] AdjacencyType adjacencyType;
-    /*
-    AdjacencyList adjacencyList;
+    
+    AdjacencyList adjacencyList = new AdjacencyList(5);
     AdjacencyMatrix adjacencyMatrix;
     AdjacencyListCosts adjacencyListCosts;
     AdjacencyMatrixCosts adjacencyMatrixCosts;
@@ -22,5 +22,5 @@ public class GameGraphs : MonoBehaviour
         adjacencyListCosts = new AdjacencyListCosts(vertexPositions.Count);
         adjacencyMatrixCosts = new AdjacencyMatrixCosts(vertexPositions.Count);
     }
-    */
+    
 }
