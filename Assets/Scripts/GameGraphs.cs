@@ -98,7 +98,7 @@ public class GameGraphs : MonoBehaviour
                 //Draw links
                 Gizmos.color = Color.white;
                 IEnumerable<int> neighbours = graph.GetNeighbours(i);
-                foreach (int neighbour in nodes[i].neighbours)
+                foreach (int neighbour in neighbours)
                 {
                     //To avoid drawing the same link multiple times
                     Gizmos.DrawLine(nodes[i].position, nodes[neighbour].position);
@@ -109,7 +109,7 @@ public class GameGraphs : MonoBehaviour
             for (int i = 0; i < vertexNumber; i++)
             {
                 Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
-                Gizmos.DrawSphere(nodes[i].position, 0.5f);
+                Gizmos.DrawSphere(nodes[i].position, 0.25f);
             }
         }
     }
