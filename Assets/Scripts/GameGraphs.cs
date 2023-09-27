@@ -71,6 +71,7 @@ public class GameGraphs : MonoBehaviour
             }
         }
     }
+
     private void OnDrawGizmos()
     {
         //We only draw in play mode
