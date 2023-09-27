@@ -4,6 +4,10 @@ using UnityEngine;
 using PathfindingLib;
 using System.Xml;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.EventSystems.EventTrigger;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine.UIElements;
+using System;
 
 public class GameGraphs : MonoBehaviour
 {
@@ -24,9 +28,48 @@ public class GameGraphs : MonoBehaviour
       
        
     }
+
+    void CreateNodeMap2D(KeyValuePair<int, List<Vector3>> entry, Vector3Int startingPosition, Vector3Int mapSize, List<Vector3> emptyNodes)
+    {
+        float ligne = Mathf.Round(Mathf.Sqrt(nombreDeNode));
+        float colone = Mathf.Round(Mathf.Sqrt(nombreDeNode));
+        int sautDeLigne = (int)Mathf.Round(Mathf.Sqrt(nombreDeNode));
+        float lesReste = nombreDeNode - (colone * colone);
+
+        for (int x = startingPosition.x; x < startingPosition.x + mapSize.x; ++x)
+        {
+            for (int z = startingPosition.z; z < startingPosition.z + mapSize.z; ++z)
+            {
+                Vector3 actualVector = new Vector3(x, 0, z);
+                if (!emptyNodes.Contains(new Vector3(x, 0, z)))
+                {
+                    Gizmos.DrawSphere(actualVector, 0.2f);
+
+                    entry.Value.Add(actualVector);
+                    if (x + 1 < colone + startingPosition.x && !emptyNodes.Contains(actualVector + new Vector3(1, 0, 0)))
+                    {
+                        Gizmos.DrawLine(actualVector, actualVector + new Vector3(1, 0, 0));
+                    }
+                    if (z + 1 < colone + startingPosition.z && !emptyNodes.Contains(actualVector + new Vector3(0, 0, 1)))
+                    {
+                        Gizmos.DrawLine(actualVector, actualVector + new Vector3(0, 0, 1));
+                    }
+                }
+            }
+        }
+        //for (int T = 0; T < lesReste; T++)
+        //{
+        //    Vector3 vecteuractuel = new Vector3(i + Startnode, 0, T + Startnode);
+        //    Gizmos.DrawSphere(vecteuractuel, 0.3f);
+        //    entry.Value.Add(vecteuractuel);
+        //}
+    }
     private void OnDrawGizmos()
     {
-        float Startnode = 0;
+
+        List<Vector3> emptyNodes = new List<Vector3>();
+        int Startnode = 0;
+        Vector3Int size = new Vector3Int(3, 1, 3);
         vertexPositions = new Dictionary<int, List<Vector3>>();
         vertexPositions.Add(1, new List<Vector3>()); //adjacencyList
         vertexPositions.Add(2, new List<Vector3>());// adjency matrix
@@ -38,63 +81,11 @@ public class GameGraphs : MonoBehaviour
         adjacencyMatrixCosts = new AdjacencyMatrixCosts(nombreDeNode);
         int i = 0;
         int j = 0;
-        Vector3 vecteuractuel = new Vector3(i + Startnode, 0, j + Startnode);
         foreach (KeyValuePair<int, List<Vector3>> entry in vertexPositions)
         {
-
-            Vector3 vecteurPrécédent = new Vector3(0,0,0);
-            float ligne = Mathf.Round(Mathf.Sqrt(nombreDeNode));
-            float colone = Mathf.Round(Mathf.Sqrt(nombreDeNode));
-            int sautDeLigne = (int)Mathf.Round(Mathf.Sqrt(nombreDeNode));
-            float lesReste = nombreDeNode - (colone* colone);
-            for ( i = 0; i < ligne; i++)
-            {
-
-                for ( j = 0; j < colone; j++)
-                {
-
-                     vecteuractuel = new Vector3(i + Startnode, 0, j + Startnode);
-
-                
-
-                    Gizmos.DrawSphere(vecteuractuel, 0.3f);
-     
-                    entry.Value.Add(vecteuractuel);
-                    if (j+1 <= colone && j!=0 )
-                    {
-                        Gizmos.DrawLine(vecteuractuel, vecteurPrécédent);
-                    }
-                    vecteurPrécédent = vecteuractuel;
-                    
-
-                }
-             
-
-            }
-            for (i = 0; i < entry.Value.Count; i++)
-            {
-
-                
-               if(i+ sautDeLigne < entry.Value.Count)
-                {
-                    Gizmos.DrawLine(entry.Value[i], entry.Value[sautDeLigne + i]);
-                }
-
-
-                  
-                    
-                  
-
-
-            }
-            //for (int T = 0; T < lesReste; T++)
-            //{
-            //    Vector3 vecteuractuel = new Vector3(i + Startnode, 0, T + Startnode);
-            //    Gizmos.DrawSphere(vecteuractuel, 0.3f);
-            //    entry.Value.Add(vecteuractuel);
-            //}
-            Startnode += colone +2;
-
+            Vector3Int vecteuractuel = new Vector3Int(i + Startnode, 0, j);
+            CreateNodeMap2D(entry, vecteuractuel, size, emptyNodes);
+            Startnode += size.x;
         }
        
     }
