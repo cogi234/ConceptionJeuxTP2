@@ -13,10 +13,11 @@ public class GameGraphs : MonoBehaviour
 {
     public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 
-    public Dictionary<int,List<Vector3>> vertexPositions;
-    [SerializeField] AdjacencyType adjacencyType;
-    [SerializeField] int nombreDeNode = 12;
-    int VecteurRendu = 1;
+    public AdjacencyType adjacencyType;
+    int vertexNumber;
+
+    [SerializeField] Vector3[] vertexPositions;
+
     AdjacencyList adjacencyList;
     AdjacencyMatrix adjacencyMatrix;
     AdjacencyListCosts adjacencyListCosts;
@@ -24,9 +25,12 @@ public class GameGraphs : MonoBehaviour
 
     private void Awake()
     {
-        
-      
-       
+        //We initialise the graphs
+        vertexNumber = vertexPositions.Length;
+        adjacencyList = new AdjacencyList(vertexNumber);
+        adjacencyMatrix = new AdjacencyMatrix(vertexNumber);
+        adjacencyListCosts = new AdjacencyListCosts(vertexNumber);
+        adjacencyMatrixCosts = new AdjacencyMatrixCosts(vertexNumber);
     }
 
     void CreateNodeMap2D(KeyValuePair<int, List<Vector3>> entry, Vector3Int startingPosition, Vector3Int mapSize, List<Vector3> emptyNodes)
@@ -79,28 +83,111 @@ public class GameGraphs : MonoBehaviour
         adjacencyMatrix = new AdjacencyMatrix(nombreDeNode);
         adjacencyListCosts = new AdjacencyListCosts(nombreDeNode);
         adjacencyMatrixCosts = new AdjacencyMatrixCosts(nombreDeNode);
+
+    private void OnDrawGizmos()
+    {
+        IGraphRepresentation graph;
+        //On affiche le graph choisi
+        switch (adjacencyType)
+        {
+            case AdjacencyType.List:
+                graph = adjacencyList;
+                break;
+            case AdjacencyType.Matrix:
+                graph = adjacencyMatrix;
+                break;
+            case AdjacencyType.ListCosts:
+                graph = adjacencyListCosts;
+                break;
+            case AdjacencyType.MatrixCosts:
+                graph = adjacencyMatrixCosts;
+                break;
+        }
+
+        //Show the nodes themselves and the link to their neighbours
+        for (int i = 0; i < vertexNumber; i++)
+        {
+            Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
+            Gizmos.DrawSphere(vertexPositions[i], 0.5f);
+        }
+
+
+        /*
+        float Startnode = 0;
         int i = 0;
         int j = 0;
         foreach (KeyValuePair<int, List<Vector3>> entry in vertexPositions)
         {
-            Vector3Int vecteuractuel = new Vector3Int(i + Startnode, 0, j);
-            CreateNodeMap2D(entry, vecteuractuel, size, emptyNodes);
-            Startnode += size.x;
+
+            Vector3 vecteurPr�c�dent = new Vector3(0,0,0);
+            float ligne = Mathf.Round(Mathf.Sqrt(vertexNumber));
+            float colone = Mathf.Round(Mathf.Sqrt(vertexNumber));
+            int sautDeLigne = (int)Mathf.Round(Mathf.Sqrt(vertexNumber));
+            float lesReste = vertexNumber - (colone* colone);
+            for ( i = 0; i < ligne; i++)
+            {
+
+                for ( j = 0; j < colone; j++)
+                {
+
+                     vecteuractuel = new Vector3(i + Startnode, 0, j + Startnode);
+
+                
+
+                    Gizmos.DrawSphere(vecteuractuel, 0.3f);
+     
+                    entry.Value.Add(vecteuractuel);
+                    if (j+1 <= colone && j!=0 )
+                    {
+                        Gizmos.DrawLine(vecteuractuel, vecteurPr�c�dent);
+                    }
+                    vecteurPr�c�dent = vecteuractuel;
+                    
+
+                }
+             
+
+            }
+            for (i = 0; i < entry.Value.Count; i++)
+            {
+
+                
+               if(i+ sautDeLigne < entry.Value.Count)
+                {
+                    Gizmos.DrawLine(entry.Value[i], entry.Value[sautDeLigne + i]);
+                }
+
+
+                  
+                    
+                  
+
+
+            }
+            //for (int T = 0; T < lesReste; T++)
+            //{
+            //    Vector3 vecteuractuel = new Vector3(i + Startnode, 0, T + Startnode);
+            //    Gizmos.DrawSphere(vecteuractuel, 0.3f);
+            //    entry.Value.Add(vecteuractuel);
+            //}
+            Startnode += colone +2;
+        
         }
+        */
        
     }
 
     void ajouternodListe()
     {
 
-        for(int i = 0;i<nombreDeNode;i++)
+        for(int i = 0;i<vertexNumber;i++)
         {
 
             if(i - 1 >= 0)
             {
                 adjacencyList.AddEdge(i, i-1);
             }
-            if (i +1 <= nombreDeNode)
+            if (i +1 <= vertexNumber)
             {
                 adjacencyList.AddEdge(i, i + 1);
             }
