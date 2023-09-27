@@ -156,13 +156,46 @@ MonoBehaviour:
   nodes:
   - position: {x: 0, y: 0, z: 0}
     neighbours:
-    - {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+    - {x: 0, y: 0, z: 1}
+  - position: {x: 1, y: 0, z: 0}
     neighbours:
     - {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+    - {x: 2, y: 0, z: 0}
+    - {x: 1, y: 0, z: 1}
+  - position: {x: 2, y: 0, z: 0}
+    neighbours:
+    - {x: 1, y: 0, z: 0}
+    - {x: 2, y: 0, z: 1}
+  - position: {x: 0, y: 0, z: 1}
     neighbours:
     - {x: 0, y: 0, z: 0}
+    - {x: 1, y: 0, z: 1}
+    - {x: 0, y: 0, z: 2}
+  - position: {x: 1, y: 0, z: 1}
+    neighbours:
+    - {x: 0, y: 0, z: 1}
+    - {x: 1, y: 0, z: 0}
+    - {x: 1, y: 0, z: 2}
+    - {x: 2, y: 0, z: 1}
+  - position: {x: 2, y: 0, z: 1}
+    neighbours:
+    - {x: 1, y: 0, z: 1}
+    - {x: 2, y: 0, z: 2}
+    - {x: 2, y: 0, z: 0}
+  - position: {x: 0, y: 0, z: 2}
+    neighbours:
+    - {x: 1, y: 0, z: 2}
+    - {x: 0, y: 0, z: 1}
+  - position: {x: 1, y: 0, z: 2}
+    neighbours:
+    - {x: 0, y: 0, z: 2}
+    - {x: 2, y: 0, z: 2}
+    - {x: 1, y: 0, z: 1}
+  - position: {x: 2, y: 0, z: 2}
+    neighbours:
+    - {x: 1, y: 0, z: 2}
+    - {x: 2, y: 0, z: 1}
   vertexPositions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 2}

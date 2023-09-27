@@ -14,7 +14,7 @@ public class GameGraphs : MonoBehaviour
     public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 
     public AdjacencyType graphType;
-    public List<Nodes> nodes;
+    [SerializeField] List<Nodes> nodes;
     int vertexNumber;
 
     [SerializeField] Vector3[] vertexPositions;
