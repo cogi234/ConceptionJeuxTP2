@@ -8,4 +8,3 @@ public class Nodes
     public Vector3 position;
     public List<Vector3> neighbours;
 }
-

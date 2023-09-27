@@ -5,6 +5,7 @@ using PathfindingLib;
 using System.Xml;
 using static UnityEngine.GraphicsBuffer;
 using UnityEditor;
+using System;
 using System.Globalization;
 using Unity.VisualScripting;
 
@@ -92,7 +93,6 @@ public class GameGraphs : MonoBehaviour
                     //To avoid drawing the same link multiple times
                     Gizmos.DrawLine(nodes[i].position, neighbour);
                 }
-
             }
         }
     }
@@ -111,13 +111,6 @@ public class GameGraphs : MonoBehaviour
             {
                 adjacencyList.AddEdge(i, i + 1);
             }
-
-
         }
-       
-        
-      
     }
-
-
 }
