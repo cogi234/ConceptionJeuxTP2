@@ -9,10 +9,11 @@ public class GameGraphs : MonoBehaviour
 {
     public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 
-    public Dictionary<int,List<Vector3>> vertexPositions;
-    [SerializeField] AdjacencyType adjacencyType;
-    [SerializeField] int nombreDeNode = 12;
-    int VecteurRendu = 1;
+    public AdjacencyType adjacencyType;
+    int vertexNumber;
+
+    [SerializeField] Vector3[] vertexPositions;
+
     AdjacencyList adjacencyList;
     AdjacencyMatrix adjacencyMatrix;
     AdjacencyListCosts adjacencyListCosts;
@@ -20,22 +21,45 @@ public class GameGraphs : MonoBehaviour
 
     private void Awake()
     {
-        
-      
-       
+        //We initialise the graphs
+        vertexNumber = vertexPositions.Length;
+        adjacencyList = new AdjacencyList(vertexNumber);
+        adjacencyMatrix = new AdjacencyMatrix(vertexNumber);
+        adjacencyListCosts = new AdjacencyListCosts(vertexNumber);
+        adjacencyMatrixCosts = new AdjacencyMatrixCosts(vertexNumber);
     }
+
+
     private void OnDrawGizmos()
     {
+        IGraphRepresentation graph;
+        //On affiche le graph choisi
+        switch (adjacencyType)
+        {
+            case AdjacencyType.List:
+                graph = adjacencyList;
+                break;
+            case AdjacencyType.Matrix:
+                graph = adjacencyMatrix;
+                break;
+            case AdjacencyType.ListCosts:
+                graph = adjacencyListCosts;
+                break;
+            case AdjacencyType.MatrixCosts:
+                graph = adjacencyMatrixCosts;
+                break;
+        }
+
+        //Show the nodes themselves and the link to their neighbours
+        for (int i = 0; i < vertexNumber; i++)
+        {
+            Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
+            Gizmos.DrawSphere(vertexPositions[i], 0.5f);
+        }
+
+
+        /*
         float Startnode = 0;
-        vertexPositions = new Dictionary<int, List<Vector3>>();
-        vertexPositions.Add(1, new List<Vector3>()); //adjacencyList
-        vertexPositions.Add(2, new List<Vector3>());// adjency matrix
-        vertexPositions.Add(3, new List<Vector3>());// adjencyListCosts
-        vertexPositions.Add(4, new List<Vector3>());//AdjencyMatrixcost
-        adjacencyList = new AdjacencyList(nombreDeNode);
-        adjacencyMatrix = new AdjacencyMatrix(nombreDeNode);
-        adjacencyListCosts = new AdjacencyListCosts(nombreDeNode);
-        adjacencyMatrixCosts = new AdjacencyMatrixCosts(nombreDeNode);
         int i = 0;
         int j = 0;
         Vector3 vecteuractuel = new Vector3(i + Startnode, 0, j + Startnode);
@@ -43,10 +67,10 @@ public class GameGraphs : MonoBehaviour
         {
 
             Vector3 vecteurPrécédent = new Vector3(0,0,0);
-            float ligne = Mathf.Round(Mathf.Sqrt(nombreDeNode));
-            float colone = Mathf.Round(Mathf.Sqrt(nombreDeNode));
-            int sautDeLigne = (int)Mathf.Round(Mathf.Sqrt(nombreDeNode));
-            float lesReste = nombreDeNode - (colone* colone);
+            float ligne = Mathf.Round(Mathf.Sqrt(vertexNumber));
+            float colone = Mathf.Round(Mathf.Sqrt(vertexNumber));
+            int sautDeLigne = (int)Mathf.Round(Mathf.Sqrt(vertexNumber));
+            float lesReste = vertexNumber - (colone* colone);
             for ( i = 0; i < ligne; i++)
             {
 
@@ -94,22 +118,23 @@ public class GameGraphs : MonoBehaviour
             //    entry.Value.Add(vecteuractuel);
             //}
             Startnode += colone +2;
-
+        
         }
+        */
        
     }
 
     void ajouternodListe()
     {
 
-        for(int i = 0;i<nombreDeNode;i++)
+        for(int i = 0;i<vertexNumber;i++)
         {
 
             if(i - 1 >= 0)
             {
                 adjacencyList.AddEdge(i, i-1);
             }
-            if (i +1 <= nombreDeNode)
+            if (i +1 <= vertexNumber)
             {
                 adjacencyList.AddEdge(i, i + 1);
             }
