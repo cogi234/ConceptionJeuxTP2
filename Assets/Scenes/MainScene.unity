@@ -155,64 +155,23 @@ MonoBehaviour:
   graphType: 0
   nodes:
   - position: {x: 0, y: 0, z: 0}
-    neighbours:
-    - {x: 1, y: 0, z: 0}
-    - {x: 0, y: 0, z: 1}
+    neighbours: 0100000003000000
   - position: {x: 1, y: 0, z: 0}
-    neighbours:
-    - {x: 0, y: 0, z: 0}
-    - {x: 2, y: 0, z: 0}
-    - {x: 1, y: 0, z: 1}
+    neighbours: 000000000200000004000000
   - position: {x: 2, y: 0, z: 0}
-    neighbours:
-    - {x: 1, y: 0, z: 0}
-    - {x: 2, y: 0, z: 1}
+    neighbours: 0100000005000000
   - position: {x: 0, y: 0, z: 1}
-    neighbours:
-    - {x: 0, y: 0, z: 0}
-    - {x: 1, y: 0, z: 1}
-    - {x: 0, y: 0, z: 2}
+    neighbours: 040000000000000006000000
   - position: {x: 1, y: 0, z: 1}
-    neighbours:
-    - {x: 0, y: 0, z: 1}
-    - {x: 1, y: 0, z: 0}
-    - {x: 1, y: 0, z: 2}
-    - {x: 2, y: 0, z: 1}
+    neighbours: 01000000030000000500000007000000
   - position: {x: 2, y: 0, z: 1}
-    neighbours:
-    - {x: 1, y: 0, z: 1}
-    - {x: 2, y: 0, z: 2}
-    - {x: 2, y: 0, z: 0}
+    neighbours: 020000000400000008000000
   - position: {x: 0, y: 0, z: 2}
-    neighbours:
-    - {x: 1, y: 0, z: 2}
-    - {x: 0, y: 0, z: 1}
+    neighbours: 0700000003000000
   - position: {x: 1, y: 0, z: 2}
-    neighbours:
-    - {x: 0, y: 0, z: 2}
-    - {x: 2, y: 0, z: 2}
-    - {x: 1, y: 0, z: 1}
+    neighbours: 080000000600000004000000
   - position: {x: 2, y: 0, z: 2}
-    neighbours:
-    - {x: 1, y: 0, z: 2}
-    - {x: 2, y: 0, z: 1}
-  vertexPositions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 2}
-  - {x: 0, y: 0, z: 4}
-  - {x: 0, y: 0, z: 6}
-  - {x: 2, y: 0, z: 0}
-  - {x: 2, y: 0, z: 2}
-  - {x: 2, y: 0, z: 4}
-  - {x: 2, y: 0, z: 6}
-  - {x: 4, y: 0, z: 0}
-  - {x: 4, y: 0, z: 2}
-  - {x: 4, y: 0, z: 4}
-  - {x: 4, y: 0, z: 6}
-  - {x: 6, y: 0, z: 0}
-  - {x: 6, y: 0, z: 2}
-  - {x: 6, y: 0, z: 4}
-  - {x: 6, y: 0, z: 6}
+    neighbours: 0700000005000000
 --- !u!4 &15496158
 Transform:
   m_ObjectHideFlags: 0

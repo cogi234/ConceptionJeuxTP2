@@ -109,7 +109,7 @@ public class GameGraphs : MonoBehaviour
             for (int i = 0; i < vertexNumber; i++)
             {
                 Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
-                Gizmos.DrawSphere(nodes[i].position, 0.5f);
+                Gizmos.DrawSphere(nodes[i].position, 0.2f);
             }
         }
     }
