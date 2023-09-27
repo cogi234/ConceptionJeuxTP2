@@ -18,9 +18,24 @@ public class GameGraphsEditor : Editor
         if (EditorApplication.isPlaying)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label("First vertex:", GUILayout);
-            selectedFirstVertex = GUILayout.TextField(playerName);
+            GUILayout.Label("Vertex 1:", GUILayout.Width(100f));
+            selectedFirstVertex = EditorGUILayout.IntField(selectedFirstVertex);
             GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Vertex 2:", GUILayout.Width(100f));
+            selectedSecondVertex = EditorGUILayout.IntField(selectedSecondVertex);
+            GUILayout.EndHorizontal();
+
+            if (GUILayout.Button("Add Edge"))
+            {
+                (target as GameGraphs).AddEdge(selectedFirstVertex, selectedSecondVertex);
+            }
+
+            if (GUILayout.Button("Remove Edge"))
+            {
+                (target as GameGraphs).RemoveEdge(selectedFirstVertex, selectedSecondVertex);
+            }
         }
 
     }
