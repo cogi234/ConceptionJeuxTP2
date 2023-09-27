@@ -47,24 +47,29 @@ public class GameGraphs : MonoBehaviour
         }
     }
 
-    void CreateNodeMap2D(KeyValuePair<int, List<Vector3>> entry, Vector3Int startingPosition, Vector3Int mapSize, List<Vector3> emptyNodes)
+    void CreateNodeMap2D(KeyValuePair<int, List<Vector3>> entry, Vector2Int startingPosition, Vector2Int mapSize, List<Vector3> emptyNodes)
     {
+
         for (int x = startingPosition.x; x < startingPosition.x + mapSize.x; ++x)
         {
-            for (int z = startingPosition.z; z < startingPosition.z + mapSize.z; ++z)
+            for (int y = startingPosition.y; y < startingPosition.y + mapSize.y; ++y)
             {
-                Vector3 actualVector = new Vector3(x, 0, z);
-                if (!emptyNodes.Contains(new Vector3(x, 0, z)))
+                Vector3 actualVector = new Vector3(x, 0, y);
+                if (!emptyNodes.Contains(actualVector))
                 {
+                    //draw sphere
+
                     Gizmos.DrawSphere(actualVector, 0.2f);
 
                     entry.Value.Add(actualVector);
                     if (x + 1 < mapSize.x + startingPosition.x && !emptyNodes.Contains(actualVector + new Vector3(1, 0, 0)))
                     {
+                        AddEdge(y * (1 + x), y * (1 + x) + 1);
                         Gizmos.DrawLine(actualVector, actualVector + new Vector3(1, 0, 0));
                     }
-                    if (z + 1 < mapSize.z + startingPosition.z && !emptyNodes.Contains(actualVector + new Vector3(0, 0, 1)))
+                    if (y + 1 < mapSize.y + startingPosition.y && !emptyNodes.Contains(actualVector + new Vector3(0, 0, 1)))
                     {
+                        AddEdge(y * (1 + x), y * (1 + x + 1));
                         Gizmos.DrawLine(actualVector, actualVector + new Vector3(0, 0, 1));
                     }
                 }
@@ -91,9 +96,8 @@ public class GameGraphs : MonoBehaviour
                     break;
             }
 
-
-            //Show the edges first
-            for (int i = 0; i < vertexNumber; i++)
+                //Show the edges first
+                for (int i = 0; i < vertexNumber; i++)
             {
                 //Draw links
                 Gizmos.color = Color.white;

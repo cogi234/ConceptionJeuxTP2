@@ -172,6 +172,8 @@ MonoBehaviour:
     neighbours: 040000000600000008000000
   - position: {x: 4, y: 0, z: 4}
     neighbours: 0500000007000000
+  - position: {x: 15, y: 0, z: 15}
+    neighbours: 0500000000000000
 --- !u!4 &15496158
 Transform:
   m_ObjectHideFlags: 0
