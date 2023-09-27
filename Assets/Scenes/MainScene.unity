@@ -152,7 +152,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b9fa15c336e554cba9319d8aee787f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adjacencyType: 0
+  graphType: 0
+  nodes:
+  - position: {x: 0, y: 0, z: 0}
+    neighbours:
+    - {x: 0, y: 0, z: 0}
+  - position: {x: 0, y: 0, z: 0}
+    neighbours:
+    - {x: 0, y: 0, z: 0}
+  - position: {x: 0, y: 0, z: 0}
+    neighbours:
+    - {x: 0, y: 0, z: 0}
   vertexPositions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 2}
