@@ -4,12 +4,13 @@ using UnityEngine;
 using PathfindingLib;
 using System.Xml;
 using static UnityEngine.GraphicsBuffer;
+using UnityEditor;
 
 public class GameGraphs : MonoBehaviour
 {
     public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 
-    public AdjacencyType adjacencyType;
+    public AdjacencyType graphType;
     int vertexNumber;
 
     [SerializeField] Vector3[] vertexPositions;
@@ -32,29 +33,41 @@ public class GameGraphs : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        IGraphRepresentation graph;
-        //On affiche le graph choisi
-        switch (adjacencyType)
+        //We only draw in play mode
+        if (EditorApplication.isPlaying)
         {
-            case AdjacencyType.List:
-                graph = adjacencyList;
-                break;
-            case AdjacencyType.Matrix:
-                graph = adjacencyMatrix;
-                break;
-            case AdjacencyType.ListCosts:
-                graph = adjacencyListCosts;
-                break;
-            case AdjacencyType.MatrixCosts:
-                graph = adjacencyMatrixCosts;
-                break;
-        }
+            //We only show the chosen graph
+            IGraphRepresentation graph = adjacencyList;
+            switch (graphType)
+            {
+                case AdjacencyType.Matrix:
+                    graph = adjacencyMatrix;
+                    break;
+                case AdjacencyType.ListCosts:
+                    graph = adjacencyListCosts;
+                    break;
+                case AdjacencyType.MatrixCosts:
+                    graph = adjacencyMatrixCosts;
+                    break;
+            }
 
-        //Show the nodes themselves and the link to their neighbours
-        for (int i = 0; i < vertexNumber; i++)
-        {
-            Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
-            Gizmos.DrawSphere(vertexPositions[i], 0.5f);
+            //Show the nodes themselves and the link to their neighbours
+            for (int i = 0; i < vertexNumber; i++)
+            {
+                Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
+                Gizmos.DrawSphere(vertexPositions[i], 0.5f);
+
+                //Draw links
+                Gizmos.color = Color.white;
+                IEnumerable<int> neighbours = graph.GetNeighbours(i);
+                foreach (int neighbour in neighbours)
+                {
+                    //To avoid drawing the same link multiple times
+                    if (neighbour > i)
+                        Gizmos.DrawLine(vertexPositions[i], vertexPositions[neighbour]);
+                }
+
+            }
         }
 
 
