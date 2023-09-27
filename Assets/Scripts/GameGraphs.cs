@@ -116,10 +116,13 @@ public class GameGraphs : MonoBehaviour
 
     public void AddEdge(int a, int b)
     {
-        adjacencyList.AddEdgeBidirectional(a, b);
-        adjacencyMatrix.AddEdgeBidirectional(a, b);
-        adjacencyListCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(nodes[a].position, nodes[b].position)));
-        adjacencyMatrixCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(nodes[a].position, nodes[b].position)));
+        if (!adjacencyList.HasNeighbour(a, b))
+        {
+            adjacencyList.AddEdgeBidirectional(a, b);
+            adjacencyMatrix.AddEdgeBidirectional(a, b);
+            adjacencyListCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(nodes[a].position, nodes[b].position)));
+            adjacencyMatrixCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(nodes[a].position, nodes[b].position)));
+        }
     }
 
     public void RemoveEdge(int a, int b)
