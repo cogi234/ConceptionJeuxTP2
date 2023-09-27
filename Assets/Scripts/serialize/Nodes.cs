@@ -6,5 +6,5 @@ using UnityEngine;
 public class Nodes
 {
     public Vector3 position;
-    public List<Vector3> neighbours;
+    public List<int> neighbours;
 }

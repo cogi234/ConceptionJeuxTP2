@@ -14,10 +14,8 @@ public class GameGraphs : MonoBehaviour
     public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 
     public AdjacencyType graphType;
-    public List<Nodes> nodes;
+    [SerializeField] List<Nodes> nodes;
     int vertexNumber;
-
-    [SerializeField] Vector3[] vertexPositions;
 
     AdjacencyList adjacencyList;
     AdjacencyMatrix adjacencyMatrix;
@@ -27,7 +25,7 @@ public class GameGraphs : MonoBehaviour
     private void Awake()
     {
         //We initialise the graphs
-        vertexNumber = vertexPositions.Length;
+        vertexNumber = nodes.Count;
         adjacencyList = new AdjacencyList(vertexNumber);
         adjacencyMatrix = new AdjacencyMatrix(vertexNumber);
         adjacencyListCosts = new AdjacencyListCosts(vertexNumber);
@@ -36,20 +34,16 @@ public class GameGraphs : MonoBehaviour
         //We shift the positions a bit
         for (int i = 0; i < vertexNumber; i++)
         {
-            vertexPositions[i] += new Vector3(4, 0, 4);
+            nodes[i].position += new Vector3(4, 0, 4);
         }
 
         //We initalise the edges
         for (int i = 0; i < vertexNumber; i++)
         {
-            int edge1 = i % 4 != 3 ? i + 1 : -1;
-            int edge2 = i + 4 >= vertexNumber ? -1 : i + 4;
-
-            if (edge1 >= 0)
-                AddEdge(i, edge1);
-
-            if (edge2 >= 0)
-                AddEdge(i, edge2);
+            foreach (int neighbour in nodes[i].neighbours)
+            {
+                AddEdge(i, neighbour);
+            }
         }
     }
 
@@ -104,10 +98,10 @@ public class GameGraphs : MonoBehaviour
                 //Draw links
                 Gizmos.color = Color.white;
                 IEnumerable<int> neighbours = graph.GetNeighbours(i);
-                foreach (Vector3 neighbour in nodes[i].neighbours)
+                foreach (int neighbour in nodes[i].neighbours)
                 {
                     //To avoid drawing the same link multiple times
-                    Gizmos.DrawLine(nodes[i].position, neighbour);
+                    Gizmos.DrawLine(nodes[i].position, nodes[neighbour].position);
                 }
             }
 
@@ -115,7 +109,7 @@ public class GameGraphs : MonoBehaviour
             for (int i = 0; i < vertexNumber; i++)
             {
                 Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
-                Gizmos.DrawSphere(vertexPositions[i], 0.5f);
+                Gizmos.DrawSphere(nodes[i].position, 0.5f);
             }
         }
     }
@@ -124,8 +118,8 @@ public class GameGraphs : MonoBehaviour
     {
         adjacencyList.AddEdgeBidirectional(a, b);
         adjacencyMatrix.AddEdgeBidirectional(a, b);
-        adjacencyListCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])));
-        adjacencyMatrixCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])));
+        adjacencyListCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(nodes[a].position, nodes[b].position)));
+        adjacencyMatrixCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(nodes[a].position, nodes[b].position)));
     }
 
     public void RemoveEdge(int a, int b)
