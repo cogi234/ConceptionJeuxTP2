@@ -152,10 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b9fa15c336e554cba9319d8aee787f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graphType: 0
+  graphType: 3
+  algorithmType: 2
+  start: {x: 1, y: 1}
+  end: {x: 9, y: 4}
   width: 10
   height: 6
   distanceBetweenVertices: 3
+  path: 0b0000000c0000001600000017000000210000002200000023000000240000002e0000002f0000003000000031000000
 --- !u!4 &15496158
 Transform:
   m_ObjectHideFlags: 0

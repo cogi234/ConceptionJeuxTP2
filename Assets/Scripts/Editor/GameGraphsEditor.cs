@@ -21,6 +21,10 @@ public class GameGraphsEditor : Editor
         {
             graph.Generate();
         }
+        if (GUILayout.Button("Find Path"))
+        {
+            graph.FindPath();
+        }
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Vertex 1:");
