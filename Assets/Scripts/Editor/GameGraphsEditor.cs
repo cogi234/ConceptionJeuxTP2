@@ -23,14 +23,18 @@ public class GameGraphsEditor : Editor
         }
 
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Vertex 1:", GUILayout.Width(100f));
+        GUILayout.Label("Vertex 1:");
+        GUILayout.Label("X:");
         firstX = EditorGUILayout.IntField(firstX);
+        GUILayout.Label("Y:");
         firstY = EditorGUILayout.IntField(firstY);
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Vertex 2:", GUILayout.Width(100f));
+        GUILayout.Label("Vertex 2:");
+        GUILayout.Label("X:");
         secondX = EditorGUILayout.IntField(secondX);
+        GUILayout.Label("Y:");
         secondY = EditorGUILayout.IntField(secondY);
         GUILayout.EndHorizontal();
 
