@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public enum AdjacencyType { List ,Matrix, ListCosts, MatrixCosts}
+
 public class GameGrap2 : MonoBehaviour
 {
 

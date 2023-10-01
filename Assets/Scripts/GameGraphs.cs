@@ -8,105 +8,112 @@ using UnityEditor;
 using System;
 using System.Globalization;
 using Unity.VisualScripting;
+using static UnityEngine.EventSystems.EventTrigger;
+
+public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
+public enum AlgorithmType { BFS, Dijkstra, Astar };
 
 public class GameGraphs : MonoBehaviour
 {
-    public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
+    [SerializeField] AdjacencyType graphType;
+    [SerializeField] AlgorithmType algorithmType;
 
-    public AdjacencyType graphType;
-    [SerializeField] List<Nodes> nodes;
+    public Vector2Int start, end;
+
+    public int width, height;
+    [SerializeField] float distanceBetweenVertices;
+
+    bool generated = false;
     int vertexNumber;
+    Vector3[] vertexPositions;
+    IGraphRepresentation[] graphs;
+    [SerializeField] List<int> path = new List<int>();
 
-    AdjacencyList adjacencyList;
-    AdjacencyMatrix adjacencyMatrix;
-    AdjacencyListCosts adjacencyListCosts;
-    AdjacencyMatrixCosts adjacencyMatrixCosts;
-
-    private void Awake()
+    public void Generate()
     {
         //We initialise the graphs
-        vertexNumber = nodes.Count;
-        adjacencyList = new AdjacencyList(vertexNumber);
-        adjacencyMatrix = new AdjacencyMatrix(vertexNumber);
-        adjacencyListCosts = new AdjacencyListCosts(vertexNumber);
-        adjacencyMatrixCosts = new AdjacencyMatrixCosts(vertexNumber);
+        vertexNumber = width * height;
+        vertexPositions = new Vector3[vertexNumber];
+        graphs = new IGraphRepresentation[4];
+        graphs[0] = new AdjacencyList(vertexNumber);
+        graphs[1] = new AdjacencyMatrix(vertexNumber);
+        graphs[2] = new AdjacencyListCosts(vertexNumber);
+        graphs[3] = new AdjacencyMatrixCosts(vertexNumber);
 
-        //We shift the positions a bit
+
         for (int i = 0; i < vertexNumber; i++)
         {
-            nodes[i].position += new Vector3(4, 0, 4);
+            int x = i % width;
+            int y = i / width;
+            vertexPositions[i] = new Vector3(x * distanceBetweenVertices + 10, 0, y * distanceBetweenVertices + 10);
+
+            if (x != 0)
+                AddEdge(i, i - 1);
+            if (x != width - 1)
+                AddEdge(i, i + 1);
+            if (y != 0)
+                AddEdge(i, i - width);
+            if (y != height - 1)
+                AddEdge(i, i + width);
         }
 
-        //We initalise the edges
-        for (int i = 0; i < vertexNumber; i++)
-        {
-            foreach (int neighbour in nodes[i].neighbours)
-            {
-                AddEdge(i, neighbour);
-            }
-        }
+        generated = true;
     }
 
-    void CreateNodeMap2D(KeyValuePair<int, List<Vector3>> entry, Vector2Int startingPosition, Vector2Int mapSize, List<Vector3> emptyNodes)
+    public void FindPath()
     {
-
-        for (int x = startingPosition.x; x < startingPosition.x + mapSize.x; ++x)
+        switch (algorithmType)
         {
-            for (int y = startingPosition.y; y < startingPosition.y + mapSize.y; ++y)
-            {
-                Vector3 actualVector = new Vector3(x, 0, y);
-                if (!emptyNodes.Contains(actualVector))
+            case AlgorithmType.BFS:
                 {
-                    //draw sphere
-
-                    Gizmos.DrawSphere(actualVector, 0.2f);
-
-                    entry.Value.Add(actualVector);
-                    if (x + 1 < mapSize.x + startingPosition.x && !emptyNodes.Contains(actualVector + new Vector3(1, 0, 0)))
-                    {
-                        AddEdge(y * (1 + x), y * (1 + x) + 1);
-                        Gizmos.DrawLine(actualVector, actualVector + new Vector3(1, 0, 0));
-                    }
-                    if (y + 1 < mapSize.y + startingPosition.y && !emptyNodes.Contains(actualVector + new Vector3(0, 0, 1)))
-                    {
-                        AddEdge(y * (1 + x), y * (1 + x + 1));
-                        Gizmos.DrawLine(actualVector, actualVector + new Vector3(0, 0, 1));
-                    }
+                    path = Algorithms.BFS(graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
+                    break;
                 }
-            }
+            case AlgorithmType.Dijkstra:
+                {
+                    path = Algorithms.Dijkstra((IWeightedGraphRepresentation)graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
+                    break;
+                }
+            case AlgorithmType.Astar:
+                {
+                    path = Algorithms.AStar((int a, int b) => Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])),
+                        (IWeightedGraphRepresentation)graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
+                    break;
+                }
         }
     }
 
     private void OnDrawGizmos()
     {
-        //We only draw in play mode
-        if (EditorApplication.isPlaying)
+        //We only draw if the graph has been generated
+        if (generated)
         {
-            //We only show the chosen graph
-            IGraphRepresentation graph = adjacencyList;
-            switch (graphType)
-            {
-                case AdjacencyType.Matrix:
-                    graph = adjacencyMatrix;
-                    break;
-                case AdjacencyType.ListCosts:
-                    graph = adjacencyListCosts;
-                    break;
-                case AdjacencyType.MatrixCosts:
-                    graph = adjacencyMatrixCosts;
-                    break;
-            }
 
-                //Show the edges first
-                for (int i = 0; i < vertexNumber; i++)
+            //Show the edges first
+            for (int i = 0; i < vertexNumber; i++)
             {
                 //Draw links
                 Gizmos.color = Color.white;
-                IEnumerable<int> neighbours = graph.GetNeighbours(i);
+                IEnumerable<int> neighbours = graphs[(int)graphType].GetNeighbours(i);
                 foreach (int neighbour in neighbours)
                 {
+                    //We color the path
+                    if (path.Contains(i))
+                    {
+                        int j1 = path.FindIndex((int a) => a == i) + 1;
+                        int j2 = path.FindIndex((int a) => a == i) - 1;
+                        if (j1 < path.Count && j1 >= 0 && path[j1] == neighbour)
+                            Gizmos.color = Color.green;
+                        else if (j2 < path.Count && j2 >= 0 && path[j2] == neighbour)
+                            Gizmos.color = Color.green;
+                        else
+                            Gizmos.color = Color.white;
+                    }
+                    else
+                        Gizmos.color = Color.white;
+
                     //To avoid drawing the same link multiple times
-                    Gizmos.DrawLine(nodes[i].position, nodes[neighbour].position);
+                    Gizmos.DrawLine(vertexPositions[i], vertexPositions[neighbour]);
                 }
             }
 
@@ -114,47 +121,30 @@ public class GameGraphs : MonoBehaviour
             for (int i = 0; i < vertexNumber; i++)
             {
                 Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
-                Gizmos.DrawSphere(nodes[i].position, 0.2f);
+                Gizmos.DrawSphere(vertexPositions[i], 0.5f);
             }
         }
     }
 
     public void AddEdge(int a, int b)
     {
-        if (!adjacencyList.HasNeighbour(a, b))
+        if (!graphs[0].HasNeighbour(a, b) && a >= 0 && a < vertexNumber && b >= 0 && b < vertexNumber)
         {
-            adjacencyList.AddEdgeBidirectional(a, b);
-            adjacencyMatrix.AddEdgeBidirectional(a, b);
-            adjacencyListCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(nodes[a].position, nodes[b].position)));
-            adjacencyMatrixCosts.AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(nodes[a].position, nodes[b].position)));
+            (graphs[0] as AdjacencyList).AddEdgeBidirectional(a, b);
+            (graphs[1] as AdjacencyMatrix).AddEdgeBidirectional(a, b);
+            (graphs[2] as AdjacencyListCosts).AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])));
+            (graphs[3] as AdjacencyMatrixCosts).AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])));
         }
     }
 
     public void RemoveEdge(int a, int b)
     {
-        adjacencyList.RemoveEdge(a, b);
-        adjacencyList.RemoveEdge(b, a);
-        adjacencyListCosts.RemoveEdge(a, b);
-        adjacencyListCosts.RemoveEdge(b, a);
-        adjacencyMatrix.RemoveEdge(a, b);
-        adjacencyMatrix.RemoveEdge(b, a);
-        adjacencyMatrixCosts.RemoveEdge(a, b);
-        adjacencyMatrixCosts.RemoveEdge(b, a);
-    }
-
-    void ajouternodListe()
-    {
-
-        for(int i = 0;i<vertexNumber;i++)
+        if (graphs[0].HasNeighbour(a, b) && a >= 0 && a < vertexNumber && b >= 0 && b < vertexNumber)
         {
-
-            if(i - 1 >= 0)
+            foreach (IGraphRepresentation g in graphs)
             {
-                adjacencyList.AddEdge(i, i-1);
-            }
-            if (i +1 <= vertexNumber)
-            {
-                adjacencyList.AddEdge(i, i + 1);
+                g.RemoveEdge(a, b);
+                g.RemoveEdge(b, a);
             }
         }
     }
