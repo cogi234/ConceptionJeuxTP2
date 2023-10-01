@@ -18,7 +18,7 @@ public class GameGrap2 : MonoBehaviour
 
     private void Start()
     {
-        trouverChemin();
+      //  trouverChemin();
     }
 
 
