@@ -96,12 +96,14 @@ public class GameGrap2 : MonoBehaviour
                     Gizmos.color = UnityEngine.Color.white;
                     if (x + 1 < mapSize.x && !emptyNodes.Contains(new Vector2Int(x + 1, y)))
                     {
-                        AddEdge(y * (1 + x), y * (1 + x) + 1, graph);
+                       // Debug.Log(x * (1 + y));
+                       // Debug.Log(x * (1 + y)+1);
+                        AddBidirectionalEdge(y * (1 + x), y * (1 + x) + 1, graph);
                         Gizmos.DrawLine(actualVector, actualVector + new Vector3(1, 0, 0));
                     }
                     if (y + 1 < mapSize.y && !emptyNodes.Contains(new Vector2Int(x, y + 1)))
                     {
-                        AddEdge(y * (1 + x), y * (1 + x + 1), graph);
+                        AddBidirectionalEdge(y * (1 + x), y * (1 + x + 1), graph);
                         Gizmos.DrawLine(actualVector, actualVector + new Vector3(0, 0, 1));
                     }
                 }
@@ -115,11 +117,14 @@ public class GameGrap2 : MonoBehaviour
     }
     public void trouverChemin()
     {
+        Debug.Log(graphsRepresentation[0].CountNeighbours(13));
+       // Debug.Log(graphsRepresentation[0].CountNeighbours(10));
+
         List<int> foundPath = Algorithms.BFS(graphsRepresentation[0], 1, 10);
         Debug.Log(foundPath.Count);
         foreach (int p in foundPath)
         {
-            Debug.Log(p);
+           // Debug.Log(p);
         }
   
 
