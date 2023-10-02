@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &15496157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,27 +153,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graphType: 0
-  nodes:
-  - position: {x: 0, y: 0, z: 0}
-    neighbours: 0100000003000000
-  - position: {x: 2, y: 0, z: 0}
-    neighbours: 000000000200000004000000
-  - position: {x: 4, y: 0, z: 0}
-    neighbours: 0100000005000000
-  - position: {x: 0, y: 0, z: 2}
-    neighbours: 000000000400000006000000
-  - position: {x: 2, y: 0, z: 2}
-    neighbours: 01000000030000000500000007000000
-  - position: {x: 4, y: 0, z: 2}
-    neighbours: 020000000400000008000000
-  - position: {x: 0, y: 0, z: 4}
-    neighbours: 0300000007000000
-  - position: {x: 2, y: 0, z: 4}
-    neighbours: 040000000600000008000000
-  - position: {x: 4, y: 0, z: 4}
-    neighbours: 0500000007000000
-  - position: {x: 15, y: 0, z: 15}
-    neighbours: 0500000000000000
+  algorithmType: 2
+  start: {x: 1, y: 1}
+  end: {x: 2, y: 3}
+  width: 4
+  height: 6
+  distanceBetweenVertices: 3
+  path: 020000000300000005000000
 --- !u!4 &15496158
 Transform:
   m_ObjectHideFlags: 0
@@ -205,7 +191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &89850509
 Transform:
   m_ObjectHideFlags: 0

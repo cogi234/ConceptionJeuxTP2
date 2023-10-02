@@ -117,7 +117,7 @@ public class GameGrap2 : MonoBehaviour
     }
     public void trouverChemin()
     {
-        Debug.Log(graphsRepresentation[0].CountNeighbours(13));
+        //Debug.Log(graphsRepresentation[0].CountNeighbours(13));
        // Debug.Log(graphsRepresentation[0].CountNeighbours(10));
 
         List<int> foundPath = Algorithms.BFS(graphsRepresentation[0], 1, 10);
