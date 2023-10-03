@@ -29,6 +29,11 @@ public class GameGraphs : MonoBehaviour
     IGraphRepresentation[] graphs;
     [SerializeField] List<int> path = new List<int>();
 
+    private void Awake()
+    {
+        Generate();
+    }
+
     public void Generate()
     {
         //We initialise the graphs
