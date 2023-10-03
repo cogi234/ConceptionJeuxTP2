@@ -9,6 +9,7 @@ using System;
 using System.Globalization;
 using Unity.VisualScripting;
 using static UnityEngine.EventSystems.EventTrigger;
+using System.IO;
 
 public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 public enum AlgorithmType { BFS, Dijkstra, Astar };
@@ -28,6 +29,7 @@ public class GameGraphs : MonoBehaviour
     Vector3[] vertexPositions;
     IGraphRepresentation[] graphs;
     [SerializeField] List<int> path = new List<int>();
+    bool resetGraf = false;
 
     private void Awake()
     {
@@ -71,6 +73,7 @@ public class GameGraphs : MonoBehaviour
         {
             case AlgorithmType.BFS:
                 {
+
                     path = Algorithms.BFS(graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
                     break;
                 }
@@ -162,5 +165,13 @@ public class GameGraphs : MonoBehaviour
                 g.RemoveEdge(b, a);
             }
         }
+    }
+    public List<int> donnerFollow()
+    {
+
+
+
+
+        return path;
     }
 }
