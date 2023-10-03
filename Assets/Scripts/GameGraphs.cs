@@ -71,11 +71,21 @@ public class GameGraphs : MonoBehaviour
                 }
             case AlgorithmType.Dijkstra:
                 {
+                    if (graphs[(int)graphType] is AdjacencyList || graphs[(int)graphType] is AdjacencyMatrix)
+                    {
+                        Debug.LogWarning("Wrong graph type for Dijkstra.");
+                        return;
+                    }
                     path = Algorithms.Dijkstra((IWeightedGraphRepresentation)graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
                     break;
                 }
             case AlgorithmType.Astar:
                 {
+                    if (graphs[(int)graphType] is AdjacencyList || graphs[(int)graphType] is AdjacencyMatrix)
+                    {
+                        Debug.LogWarning("Wrong graph type for Dijkstra.");
+                        return;
+                    }
                     path = Algorithms.AStar((int a, int b) => Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])),
                         (IWeightedGraphRepresentation)graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
                     break;
