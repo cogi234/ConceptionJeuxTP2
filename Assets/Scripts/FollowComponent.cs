@@ -15,6 +15,8 @@ public class FollowComponent : MonoBehaviour
     {
         //If the graph changes, we have to recalculate the path
         graph.OnGraphChange.AddListener(ChangePath);
+
+        ChangePath();
     }
 
     void Update()
