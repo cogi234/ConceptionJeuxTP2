@@ -14,8 +14,19 @@ using System.IO;
 public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 public enum AlgorithmType { BFS, Dijkstra, Astar };
 
+
 public class GameGraphs : MonoBehaviour
 {
+
+    folow folower;
+    private void Start()
+    {
+      
+        folower = gameObject.GetComponentInChildren<folow>();
+        donnerFollow();
+    }
+
+
     [SerializeField] AdjacencyType graphType;
     [SerializeField] AlgorithmType algorithmType;
 
@@ -75,6 +86,7 @@ public class GameGraphs : MonoBehaviour
                 {
 
                     path = Algorithms.BFS(graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
+                    
                     break;
                 }
             case AlgorithmType.Dijkstra:
@@ -85,6 +97,7 @@ public class GameGraphs : MonoBehaviour
                         return;
                     }
                     path = Algorithms.Dijkstra((IWeightedGraphRepresentation)graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
+                   
                     break;
                 }
             case AlgorithmType.Astar:
@@ -96,9 +109,11 @@ public class GameGraphs : MonoBehaviour
                     }
                     path = Algorithms.AStar((int a, int b) => Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])),
                         (IWeightedGraphRepresentation)graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
+                  
                     break;
                 }
         }
+        donnerFollow();
     }
 
     private void OnDrawGizmos()
@@ -141,6 +156,7 @@ public class GameGraphs : MonoBehaviour
                 Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
                 Gizmos.DrawSphere(vertexPositions[i], 0.5f);
             }
+           
         }
     }
 
@@ -166,12 +182,14 @@ public class GameGraphs : MonoBehaviour
             }
         }
     }
-    public List<int> donnerFollow()
+    public void donnerFollow()
     {
 
 
+       
+        folower.metterfolow(vertexPositions, path);
 
 
-        return path;
+   
     }
 }

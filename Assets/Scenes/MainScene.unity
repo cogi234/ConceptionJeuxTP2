@@ -154,12 +154,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graphType: 0
   algorithmType: 0
-  start: {x: 0, y: 0}
-  end: {x: 2, y: 3}
+  start: {x: 2, y: 6}
+  end: {x: 3, y: 4}
   width: 4
   height: 6
   distanceBetweenVertices: 3
-  path: 000000000100000002000000060000000a0000000e000000
+  path: 160000001200000013000000
 --- !u!4 &15496158
 Transform:
   m_ObjectHideFlags: 0
