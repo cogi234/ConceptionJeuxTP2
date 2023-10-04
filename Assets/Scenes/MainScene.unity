@@ -160,6 +160,9 @@ MonoBehaviour:
   height: 6
   distanceBetweenVertices: 3
   path: 00000000010000000200000003000000070000000b0000000f00000013000000
+  OnGraphChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &15496158
 Transform:
   m_ObjectHideFlags: 0
@@ -172,8 +175,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 635622264}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &89850508
@@ -251,7 +253,7 @@ GameObject:
   - component: {fileID: 635622261}
   - component: {fileID: 635622265}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Follower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -336,12 +338,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 635622260}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: -0.23347321, z: 10.07}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 15496158}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &635622265
 MonoBehaviour:
@@ -355,6 +357,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8959d11837cde9143a84275adbeeae95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
+  graph: {fileID: 15496157}
 --- !u!1 &664578384
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,4 +552,5 @@ SceneRoots:
   - {fileID: 664578387}
   - {fileID: 1885213029}
   - {fileID: 15496158}
+  - {fileID: 635622264}
   - {fileID: 89850509}

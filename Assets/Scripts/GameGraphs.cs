@@ -10,6 +10,7 @@ using System.Globalization;
 using Unity.VisualScripting;
 using static UnityEngine.EventSystems.EventTrigger;
 using System.IO;
+using UnityEngine.Events;
 
 public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 public enum AlgorithmType { BFS, Dijkstra, Astar };
@@ -17,16 +18,6 @@ public enum AlgorithmType { BFS, Dijkstra, Astar };
 
 public class GameGraphs : MonoBehaviour
 {
-
-    folow folower;
-    private void Start()
-    {
-      
-        folower = gameObject.GetComponentInChildren<folow>();
-        donnerFollow();
-    }
-
-
     [SerializeField] AdjacencyType graphType;
     [SerializeField] AlgorithmType algorithmType;
 
@@ -39,11 +30,14 @@ public class GameGraphs : MonoBehaviour
     int vertexNumber;
     Vector3[] vertexPositions;
     IGraphRepresentation[] graphs;
-    [SerializeField] List<int> path = new List<int>();
-    bool resetGraf = false;
+    public List<int> path = new List<int>();
+    public UnityEvent OnGraphChange = new UnityEvent();
 
     private void Awake()
     {
+        if (OnGraphChange == null)
+            OnGraphChange = new UnityEvent();
+
         Generate();
     }
 
@@ -76,6 +70,8 @@ public class GameGraphs : MonoBehaviour
         }
 
         generated = true;
+
+        OnGraphChange.Invoke();
     }
 
     public void FindPath()
@@ -113,7 +109,15 @@ public class GameGraphs : MonoBehaviour
                     break;
                 }
         }
-        donnerFollow();
+    }
+
+    public Vector3 GetPosition(int i)
+    {
+        return vertexPositions[i];
+    }
+    public Vector3 GetPosition(int x, int y)
+    {
+        return vertexPositions[y * width + x];
     }
 
     private void OnDrawGizmos()
@@ -168,6 +172,8 @@ public class GameGraphs : MonoBehaviour
             (graphs[1] as AdjacencyMatrix).AddEdgeBidirectional(a, b);
             (graphs[2] as AdjacencyListCosts).AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])));
             (graphs[3] as AdjacencyMatrixCosts).AddEdgeBidirectional(a, b, Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])));
+
+            OnGraphChange.Invoke();
         }
     }
 
@@ -180,16 +186,8 @@ public class GameGraphs : MonoBehaviour
                 g.RemoveEdge(a, b);
                 g.RemoveEdge(b, a);
             }
+
+            OnGraphChange.Invoke();
         }
-    }
-    public void donnerFollow()
-    {
-
-
-       
-        folower.metterfolow(vertexPositions, path); 
-
-
-   
     }
 }
