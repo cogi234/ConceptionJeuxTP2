@@ -187,7 +187,7 @@ public class GameGraphs : MonoBehaviour
 
 
        
-        folower.metterfolow(vertexPositions, path);
+        folower.metterfolow(vertexPositions, path); 
 
 
    
