@@ -26,7 +26,7 @@ public class FollowComponent : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, graph.GetPosition(path[compteurPath]), speed * Time.deltaTime);
             //If we reached the point, we switch to the next
-            if (Vector3.Distance(transform.position, graph.GetPosition(path[compteurPath])) < 0.5f)
+            if (Vector3.Distance(transform.position, graph.GetPosition(path[compteurPath])) < 0.1f)
             {
                     compteurPath++;
             }

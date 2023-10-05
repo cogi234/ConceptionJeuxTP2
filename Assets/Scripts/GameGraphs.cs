@@ -80,9 +80,8 @@ public class GameGraphs : MonoBehaviour
         {
             case AlgorithmType.BFS:
                 {
-
                     path = Algorithms.BFS(graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
-                    
+                    LogPath();
                     break;
                 }
             case AlgorithmType.Dijkstra:
@@ -93,7 +92,7 @@ public class GameGraphs : MonoBehaviour
                         return;
                     }
                     path = Algorithms.Dijkstra((IWeightedGraphRepresentation)graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
-                   
+                    LogPath();
                     break;
                 }
             case AlgorithmType.Astar:
@@ -105,7 +104,7 @@ public class GameGraphs : MonoBehaviour
                     }
                     path = Algorithms.AStar((int a, int b) => Mathf.FloorToInt(Vector3.Distance(vertexPositions[a], vertexPositions[b])),
                         (IWeightedGraphRepresentation)graphs[(int)graphType], start.y * width + start.x, end.y * width + end.x);
-                  
+                    LogPath();
                     break;
                 }
         }
@@ -160,7 +159,7 @@ public class GameGraphs : MonoBehaviour
                 Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
                 Gizmos.DrawSphere(vertexPositions[i], 0.5f);
             }
-           
+
         }
     }
 
@@ -189,5 +188,16 @@ public class GameGraphs : MonoBehaviour
 
             OnGraphChange.Invoke();
         }
+    }
+
+    private void LogPath()
+    {
+        string pathString = "Path: ";
+        for (int i = 0; i < path.Count; i++)
+        {
+            pathString += $"{path[i]}" + (i == path.Count - 1 ? "" : ", ");
+        }
+
+        Debug.Log(pathString);
     }
 }
