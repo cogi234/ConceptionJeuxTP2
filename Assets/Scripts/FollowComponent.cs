@@ -16,6 +16,7 @@ public class FollowComponent : MonoBehaviour
         //If the graph changes, we have to recalculate the path
         graph.OnGraphChange.AddListener(ReloadPath);
 
+        //We start with a random path
         RandomPath();
     }
 

@@ -6,6 +6,7 @@ using UnityEditor;
 [CustomEditor(typeof(GameGraphs))]
 public class GameGraphsEditor : Editor
 {
+    //This is a script to allow us to edit the edges of the graph
     int firstX = 0;
     int firstY = 0;
     int secondX = 0;

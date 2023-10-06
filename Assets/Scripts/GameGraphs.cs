@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using PathfindingLib;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
 public enum AlgorithmType { BFS, Dijkstra, Astar };
-
 
 public class GameGraphs : MonoBehaviour
 {
@@ -22,8 +22,8 @@ public class GameGraphs : MonoBehaviour
     int vertexNumber;
     Vector3[] vertexPositions;
     IGraphRepresentation[] graphs;
-    public List<int> path = new List<int>();
-    public UnityEvent OnGraphChange = new UnityEvent();
+    [HideInInspector] public List<int> path = new List<int>();
+    [HideInInspector] public UnityEvent OnGraphChange = new UnityEvent();
 
     private void Awake()
     {
@@ -44,13 +44,14 @@ public class GameGraphs : MonoBehaviour
         graphs[2] = new AdjacencyListCosts(vertexNumber);
         graphs[3] = new AdjacencyMatrixCosts(vertexNumber);
 
-
+        //Then we generate a rectangle of nodes
         for (int i = 0; i < vertexNumber; i++)
         {
             int x = i % width;
             int y = i / width;
             vertexPositions[i] = new Vector3(x * distanceBetweenVertices + 10, 0, y * distanceBetweenVertices + 10);
 
+            //We connect the nodes to the four adjacent nodes
             if (x != 0)
                 AddEdge(i, i - 1);
             if (x != width - 1)
@@ -68,6 +69,7 @@ public class GameGraphs : MonoBehaviour
 
     public void FindPath()
     {
+        //We use the appropriate algorithm.
         switch (algorithmType)
         {
             case AlgorithmType.BFS:
