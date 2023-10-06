@@ -2,14 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PathfindingLib;
-using System.Xml;
-using static UnityEngine.GraphicsBuffer;
-using UnityEditor;
-using System;
-using System.Globalization;
-using Unity.VisualScripting;
-using static UnityEngine.EventSystems.EventTrigger;
-using System.IO;
 using UnityEngine.Events;
 
 public enum AdjacencyType { List, Matrix, ListCosts, MatrixCosts };
@@ -156,7 +148,10 @@ public class GameGraphs : MonoBehaviour
             //Show the nodes themselves second
             for (int i = 0; i < vertexNumber; i++)
             {
-                Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
+                if (path.Contains(i))
+                    Gizmos.color = Color.green;
+                else
+                    Gizmos.color = Color.Lerp(Color.red, Color.blue, (float)i / (float)(vertexNumber - 1));
                 Gizmos.DrawSphere(vertexPositions[i], 0.5f);
             }
 
@@ -199,14 +194,5 @@ public class GameGraphs : MonoBehaviour
         }
 
         Debug.Log(pathString);
-    }
-    public void RandomPath()
-    {
-      System.Random rnd = new System.Random();
-
-        // vertexNumber = width * height;
-        start = end;
-        end = new Vector2Int(rnd.Next(width), rnd.Next(height));
-        FindPath();
     }
 }
