@@ -30,6 +30,13 @@ public class FollowComponent : MonoBehaviour
                     pathCounter++;
             }
         }
+        //find new path
+        else
+        {
+            graph.RandomPath();
+            ChangePath();
+        }
+
     }
 
     public void ChangePath()

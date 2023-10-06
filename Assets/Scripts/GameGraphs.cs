@@ -200,4 +200,13 @@ public class GameGraphs : MonoBehaviour
 
         Debug.Log(pathString);
     }
+    public void RandomPath()
+    {
+      System.Random rnd = new System.Random();
+
+        // vertexNumber = width * height;
+        start = end;
+        end = new Vector2Int(rnd.Next(width), rnd.Next(height));
+        FindPath();
+    }
 }
